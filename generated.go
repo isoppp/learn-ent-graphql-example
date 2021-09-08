@@ -39,7 +39,6 @@ type Config struct {
 type ResolverRoot interface {
 	Mutation() MutationResolver
 	Query() QueryResolver
-	Todo() TodoResolver
 }
 
 type DirectiveRoot struct {
@@ -70,10 +69,6 @@ type MutationResolver interface {
 }
 type QueryResolver interface {
 	Todos(ctx context.Context) ([]*ent.Todo, error)
-}
-type TodoResolver interface {
-	Parent(ctx context.Context, obj *ent.Todo) (*ent.Todo, error)
-	Children(ctx context.Context, obj *ent.Todo) ([]*ent.Todo, error)
 }
 
 type executableSchema struct {
@@ -669,13 +664,13 @@ func (ec *executionContext) _Todo_parent(ctx context.Context, field graphql.Coll
 		Field:      field,
 		Args:       nil,
 		IsMethod:   true,
-		IsResolver: true,
+		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Todo().Parent(rctx, obj)
+		return obj.Parent(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -701,13 +696,13 @@ func (ec *executionContext) _Todo_children(ctx context.Context, field graphql.Co
 		Field:      field,
 		Args:       nil,
 		IsMethod:   true,
-		IsResolver: true,
+		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Todo().Children(rctx, obj)
+		return obj.Children(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2336,19 +2331,13 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 }
 
 func (ec *executionContext) unmarshalNStatus2todoᚋentᚋtodoᚐStatus(ctx context.Context, v interface{}) (todo.Status, error) {
-	tmp, err := graphql.UnmarshalString(v)
-	res := todo.Status(tmp)
+	var res todo.Status
+	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNStatus2todoᚋentᚋtodoᚐStatus(ctx context.Context, sel ast.SelectionSet, v todo.Status) graphql.Marshaler {
-	res := graphql.MarshalString(string(v))
-	if res == graphql.Null {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-	}
-	return res
+	return v
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
