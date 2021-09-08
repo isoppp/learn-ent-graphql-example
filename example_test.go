@@ -2,6 +2,7 @@ package todo
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"todo/ent"
 
@@ -22,4 +23,12 @@ func Example_Todo() {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 	// Output:
+
+	task1, err := client.Todo.Create().Save(ctx)
+	if err != nil {
+		log.Fatalf("failed creating a todo: %v", err)
+	}
+	fmt.Println(task1)
+	// Output:
+	// Todo(id=1)
 }
