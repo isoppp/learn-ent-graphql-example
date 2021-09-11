@@ -5,9 +5,9 @@ package main
 import (
 	"log"
 
+	"entgo.io/contrib/entgql"
 	"entgo.io/ent/entc"
 	"entgo.io/ent/entc/gen"
-	"entgo.io/contrib/entgql"
 )
 
 func main() {
@@ -17,6 +17,7 @@ func main() {
 	}
 	opts := []entc.Option{
 		entc.Extensions(ex),
+		entc.TemplateDir("./template"),
 	}
 	if err := entc.Generate("./schema", &gen.Config{}, opts...); err != nil {
 		log.Fatalf("running ent codegen: %v", err)
