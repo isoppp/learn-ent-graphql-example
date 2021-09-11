@@ -60,6 +60,7 @@ type Query {
         before: Cursor
         last: Int
         orderBy: TodoOrder
+        where: TodoWhereInput
     ): TodoConnection
     node(id: ID!): Node
     nodes(ids: [ID!]): [Node]!
