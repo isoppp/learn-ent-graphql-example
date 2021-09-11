@@ -5,16 +5,19 @@ package todo
 
 import (
 	"context"
-	"fmt"
 	"todo/ent"
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, todo TodoInput) (*ent.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+	return r.client.Todo.Create().
+		SetText(todo.Text).
+		SetStatus(todo.Status).
+		SetNillablePriority(todo.Priority).
+		SetNillableParentID(todo.Parent).Save(ctx)
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*ent.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+	return r.client.Todo.Query().All(ctx)
 }
 
 // Mutation returns MutationResolver implementation.
