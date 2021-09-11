@@ -85,8 +85,8 @@ const DefaultStatus = StatusInProgress
 
 // Status values.
 const (
-	StatusInProgress Status = "in_progress"
-	StatusCompleted  Status = "completed"
+	StatusInProgress Status = "IN_PROGRESS"
+	StatusCompleted  Status = "COMPLETED"
 )
 
 func (s Status) String() string {

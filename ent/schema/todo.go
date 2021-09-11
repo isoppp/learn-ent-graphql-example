@@ -1,10 +1,11 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"time"
 )
 
 // Todo holds the schema definition for the Todo entity.
@@ -17,7 +18,12 @@ func (Todo) Fields() []ent.Field {
 	return []ent.Field{
 		field.Text("text").NotEmpty(),
 		field.Time("created_at").Default(time.Now).Immutable(),
-		field.Enum("status").Values("in_progress", "completed").Default("in_progress"),
+		field.Enum("status").
+			NamedValues(
+				"InProgress", "IN_PROGRESS",
+				"Completed", "COMPLETED",
+			).
+			Default("IN_PROGRESS"),
 		field.Int("priority").Default(0),
 	}
 }
