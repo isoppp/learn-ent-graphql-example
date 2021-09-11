@@ -14,6 +14,7 @@ resolver:
 # provided Go package. If they match it will use them, otherwise it will generate new ones.
 autobind:
   - todo/ent
+  - todo/ent/todo
 
 # This section declares type mapping between the GraphQL and Go type systems.
 models:
@@ -25,6 +26,6 @@ models:
     model:
       - todo/ent.Noder
   # Map the Status type that was defined in the schema
-  Status:
-    model:
-      - todo/ent/todo.Status
+#  Status:
+#    model:
+#      - todo/ent/todo.Status
