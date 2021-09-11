@@ -33,7 +33,7 @@ func main() {
 
 	// Configure the server and start listening on :8081
 	srv := handler.NewDefaultServer(todo.NewSchema(client.Debug()))
-	srv.Use(entgql.Transactioner{TxOpener: client})
+	srv.Use(entgql.Transactioner{TxOpener: client.Debug()})
 
 	http.Handle("/", playground.Handler("Todo", "/query"))
 	http.Handle("/query", srv)
