@@ -5,16 +5,21 @@ package todo
 
 import (
 	"context"
+	"fmt"
 	"todo/ent"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, todo TodoInput) (*ent.Todo, error) {
+func (r *mutationResolver) CreateTodo(ctx context.Context, input ent.CreateTodoInput) (*ent.Todo, error) {
 	client := ent.FromContext(ctx)
-	return client.Todo.Create().
-		SetText(todo.Text).
-		SetStatus(todo.Status).
-		SetNillablePriority(todo.Priority).
-		SetNillableParentID(todo.Parent).Save(ctx)
+	return client.Todo.Create().SetInput(input).Save(ctx)
+}
+
+func (r *mutationResolver) UpdateTodo(ctx context.Context, id int, input ent.UpdateTodoInput) (*ent.Todo, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) UpdateTodos(ctx context.Context, ids []int, input ent.UpdateTodoInput) ([]*ent.Todo, error) {
+	panic(fmt.Errorf("not implemented"))
 }
 
 func (r *queryResolver) Todos(ctx context.Context, after *ent.Cursor, first *int, before *ent.Cursor, last *int, orderBy *ent.TodoOrder) (*ent.TodoConnection, error) {
