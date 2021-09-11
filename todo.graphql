@@ -41,7 +41,53 @@ type Mutation {
 
 # Define a query for getting all todos.
 type Query {
-    todos: [Todo!]
+    todos(
+        after: Cursor
+        first: Int
+        before: Cursor
+        last: Int
+        orderBy: TodoOrder
+    ): TodoConnection
     node(id: ID!): Node
     nodes(ids: [ID!]): [Node]!
+}
+
+# Define a Relay Cursor type:
+# https://relay.dev/graphql/connections.htm#sec-Cursor
+scalar Cursor
+
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: Cursor
+    endCursor: Cursor
+}
+
+type TodoEdge {
+    node: Todo
+    cursor: Cursor!
+}
+
+type TodoConnection {
+    totalCount: Int!
+    pageInfo: PageInfo!
+    edges: [TodoEdge]
+}
+
+# These enums are matched the entgql annotations in the ent/schema.
+enum TodoOrderField {
+    CREATED_AT
+    PRIORITY
+    STATUS
+    TEXT
+}
+
+enum OrderDirection {
+    ASC
+    DESC
+}
+
+input TodoOrder {
+    direction: OrderDirection!
+    field: TodoOrderField
 }
